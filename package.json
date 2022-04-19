@@ -7,7 +7,7 @@
     "build"
   ],
   "scripts": {
-    "start": "node server.js"
+    "build": "tsc --esModuleInterop -d src/index.ts --outDir build"
   },
   "keywords": [
     "Remix",
@@ -15,5 +15,8 @@
     "context"
   ],
   "author": "Brandon Pittman",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
 }
