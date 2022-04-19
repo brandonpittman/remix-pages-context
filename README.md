@@ -4,6 +4,10 @@ This package lets you use Cloudflare Pages' environment variables more easily.
 
 Some setup is requried.
 
+## Install
+
+`npm install remix-pages-context`
+
 ## `server.js`
 
 Change your `server.js` to the following. This takes the `data` and `env` keys
