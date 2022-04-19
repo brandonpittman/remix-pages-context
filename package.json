@@ -18,5 +18,14 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.6.3"
-  }
+  },
+  "types": "./build/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonpittman/remix-pages-context.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brandonpittman/remix-pages-context/issues"
+  },
+  "homepage": "https://github.com/brandonpittman/remix-pages-context#readme"
 }
