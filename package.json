@@ -1,6 +1,6 @@
 {
   "name": "remix-pages-context",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
   "main": "./build/index.js",
   "files": [
