@@ -6,7 +6,9 @@ Some setup is requried.
 
 ## Install
 
-`npm install remix-pages-context`
+```sh
+npm install remix-pages-context
+```
 
 ## `server.js`
 
