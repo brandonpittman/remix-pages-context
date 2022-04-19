@@ -1,0 +1,19 @@
+{
+  "name": "remix-pages-context",
+  "version": "0.0.1",
+  "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
+  "main": "./build/index.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Remix",
+    "Cloudflare",
+    "context"
+  ],
+  "author": "Brandon Pittman",
+  "license": "MIT"
+}
