@@ -16,7 +16,7 @@ Change your `server.js` to the following. This takes the `data` and `env` keys
 off the Cloudflare Pages function param and passes it to your Remix loader
 context.
 
-```js
+```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 import * as build from "@remix-run/dev/server-build";
 
@@ -40,7 +40,7 @@ export function onRequest(context) {
 
 Add a loader to `root.tsx` like this:
 
-```ts
+```tsx
 import { setPagesContext } from "remix-pages-context";
 
 export function loader({ context }) {
@@ -65,4 +65,22 @@ updatePagesData({
 });
 
 // => { foo: "foo", msg: "Hey there."}
+```
+
+## Limitations
+
+If you call `getPagesContext()` in a `*.server.ts` module, it will be undefined
+at build time. You need to call it in a function because it will be `undefined`
+until the `loader` in `root.tsx` is run.
+
+```ts
+// foo.server.ts
+import { getPagesContext } from "remix-pages-context";
+
+let context;
+
+const foo = () => {
+  context = getPagesContext();
+  // do something with context
+};
 ```
