@@ -58,8 +58,7 @@ Then, in any other module, call `getPagesContext()` to access the context set in
 
 ## Limitations
 
-If you call `getPagesContext()` in a `*.server.ts` module, it will be undefined
-at build time. You need to call it in a function because it will be `undefined`
+If you call `getPagesContext()` in a `*.server.ts` module, you need to call it in a function because it will be `undefined`
 until the `loader` in `root.tsx` is run.
 
 ```ts
