@@ -1,3 +1,3 @@
 # To-dos
 
-- improve build script
+- [x] improve build script
