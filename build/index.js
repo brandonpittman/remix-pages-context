@@ -4,6 +4,7 @@ exports.getPagesContext = exports.setPagesContext = void 0;
 var pagesContext;
 var setPagesContext = function (context) {
     pagesContext = context;
+    return context;
 };
 exports.setPagesContext = setPagesContext;
 var getPagesContext = function () { return pagesContext; };
