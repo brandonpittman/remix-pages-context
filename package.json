@@ -7,7 +7,8 @@
     "build"
   ],
   "scripts": {
-    "build": "tsc --esModuleInterop -d src/index.ts --outDir build"
+    "build": "tsc --esModuleInterop -d src/index.ts --outDir build",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "Remix",
