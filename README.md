@@ -10,7 +10,7 @@ Some setup is requried.
 npm install remix-pages-context
 ```
 
-## `server.js`
+## Set up `server.js`
 
 Change your `server.js` to the following. This takes the `data` and `env` keys
 off the Cloudflare Pages function param and passes it to your Remix loader
@@ -25,8 +25,8 @@ const handleRequest = createPagesFunctionHandler({
   mode: process.env.NODE_ENV,
   getLoadContext: ({ data, env }) => {
     return {
-      data,
-      env,
+      ...data,
+      ...env,
     };
   },
 });
@@ -36,6 +36,8 @@ export function onRequest(context) {
 }
 ```
 
+This is an example of what to provide your `loader` functions. You can return whatever you like here.
+
 ## `root.tsx`
 
 Add a loader to `root.tsx` like this:
@@ -43,6 +45,7 @@ Add a loader to `root.tsx` like this:
 ```tsx
 import { setPagesContext } from "remix-pages-context";
 
+// the `context` here will be the { ...data, ...env } from `server.js`.
 export function loader({ context }) {
   setPagesContext(context);
   return null;
@@ -52,20 +55,6 @@ export function loader({ context }) {
 ## Use the context
 
 Then, in any other module, call `getPagesContext()` to access the context set in `root.tsx`.
-
-## Updating `data`
-
-Cloudflare Pages also lets you pass arbitrary data around. While not immediately useful to Remix, the capability is maintained here. The update function does a shallow merge of the param and existing object.
-
-```ts
-// given { foo: "foo", msg: "Hello."}
-
-updatePagesData({
-  msg: "Hey there.",
-});
-
-// => { foo: "foo", msg: "Hey there."}
-```
 
 ## Limitations
 
