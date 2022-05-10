@@ -1,9 +1,18 @@
 let pagesContext: Record<string, any>;
 
-export let setPagesContext = (context: typeof pagesContext) => {
+type Context = typeof pagesContext;
+
+export let setPagesContext = (context: Context) => {
   pagesContext = context;
 
   return context;
 };
 
 export let getPagesContext = () => pagesContext;
+
+export let getLoadContext = ({ data, env }: Context) => {
+  return {
+    ...data,
+    ...env,
+  };
+};

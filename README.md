@@ -12,28 +12,36 @@ npm install remix-pages-context
 
 ## Set up `server.js`
 
-Change your `server.js` to the following. This takes the `data` and `env` keys
-off the Cloudflare Pages function param and passes it to your Remix loader
-context.
+Import `getLoadContext` into your `server.js`. This takes the `data` and `env`
+keys off the Cloudflare Pages function param and passes it to your Remix loader
+context. Feel free to write your own, but if you just want the default
+behavior, this function is a good start.
 
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 import * as build from "@remix-run/dev/server-build";
+import { getLoadContext } from "remix-pages-context";
 
 const handleRequest = createPagesFunctionHandler({
   build,
   mode: process.env.NODE_ENV,
-  getLoadContext: ({ data, env }) => {
-    return {
-      ...data,
-      ...env,
-    };
-  },
+  getLoadContext,
 });
 
 export function onRequest(context) {
   return handleRequest(context);
 }
+```
+
+The provided `getLoadContext` looks like this:
+
+```ts
+getLoadContext: ({ data, env }) => {
+  return {
+    ...data,
+    ...env,
+  };
+};
 ```
 
 This is an example of what to provide your `loader` functions. You can return whatever you like here.
