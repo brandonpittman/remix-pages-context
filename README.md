@@ -45,7 +45,7 @@ getLoadContext: ({ data, env }) => {
 
 ## Use the context
 
-Then, in any other module, call `getPagesContext()` to access the context set in `root.tsx`.
+Then, in any other module, call `getPagesContext()` to access the context set in `server.js`.
 
 ## Limitations
 
