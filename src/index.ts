@@ -11,8 +11,8 @@ export let setPagesContext = (context: Context) => {
 export let getPagesContext = () => pagesContext;
 
 export let getLoadContext = ({ data, env }: Context) => {
-  return {
+  return setPagesContext({
     ...data,
     ...env,
-  };
+  });
 };
