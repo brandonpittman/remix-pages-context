@@ -14,8 +14,7 @@ npm install remix-pages-context
 
 Import `getLoadContext` into your `server.js`. This takes the `data` and `env`
 keys off the Cloudflare Pages function param and passes it to your Remix loader
-context. Feel free to write your own, but if you just want the default
-behavior, this function is a good start.
+context.
 
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
@@ -42,22 +41,6 @@ getLoadContext: ({ data, env }) => {
     ...env,
   };
 };
-```
-
-This is an example of what to provide your `loader` functions. You can return whatever you like here.
-
-## `root.tsx`
-
-Add a loader to `root.tsx` like this:
-
-```tsx
-import { setPagesContext } from "remix-pages-context";
-
-// the `context` here will be the { ...data, ...env } from `server.js`.
-export function loader({ context }) {
-  setPagesContext(context);
-  return null;
-}
 ```
 
 ## Use the context
