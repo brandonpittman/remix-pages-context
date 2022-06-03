@@ -36,10 +36,10 @@ The provided `getLoadContext` looks like this:
 
 ```ts
 getLoadContext: ({ data, env }) => {
-  return {
+  return setPagesContext({
     ...data,
     ...env,
-  };
+  });
 };
 ```
 
