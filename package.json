@@ -1,13 +1,19 @@
 {
   "name": "remix-pages-context",
+  "type": "module",
   "version": "0.1.7",
   "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
-  "main": "./build/index.js",
+  "main": "./dist/index.cjs",
+  "exports": {
+    "require": "dist/index.cjs",
+    "default": "dist/index.js"
+  },
+  "module": "dist/index.js",
   "files": [
-    "build"
+    "dist"
   ],
   "scripts": {
-    "build": "tsc --esModuleInterop -d src/index.ts --outDir build",
+    "build": "tsup src --format esm,cjs --clean --no-splitting",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -22,6 +28,7 @@
     "@remix-run/cloudflare": "^1.5.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "tsup": "^6.0.1",
     "typescript": "^4.6.3"
   },
   "types": "./build/index.d.ts",
