@@ -1,7 +1,7 @@
 {
   "name": "remix-pages-context",
   "type": "module",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
   "main": "./dist/index.cjs",
   "exports": {
@@ -30,7 +30,7 @@
     "tsup": "^6.0.1",
     "typescript": "^4.6.3"
   },
-  "types": "./build/index.d.ts",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brandonpittman/remix-pages-context.git"
