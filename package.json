@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src --format esm,cjs --clean --no-splitting",
+    "build": "tsup src --dts --format esm,cjs --clean --no-splitting",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
