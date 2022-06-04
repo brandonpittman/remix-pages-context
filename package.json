@@ -1,7 +1,7 @@
 {
   "name": "remix-pages-context",
   "type": "module",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
   "main": "./dist/index.cjs",
   "exports": {
