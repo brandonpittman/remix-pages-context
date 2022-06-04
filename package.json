@@ -5,8 +5,7 @@
   "description": "A module to make using Cloudflare Pages environment variables easier with Remix.",
   "main": "./dist/index.cjs",
   "exports": {
-    "require": "dist/index.cjs",
-    "default": "dist/index.js"
+    "require": "dist/index.cjs"
   },
   "module": "dist/index.js",
   "files": [
