@@ -13,6 +13,8 @@ let maxAge = YEAR;
 export function getSessionStorage() {
   let env = getPagesContext();
 
+  console.log(env);
+
   if (!env.SESSION_SECRET) throw new Error("SESSION_SECRET is not defined");
 
   if (!env.KV) throw new Error("KV namespace, KV, is not defined");
