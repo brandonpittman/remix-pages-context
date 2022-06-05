@@ -1,10 +1,11 @@
+import { CookieOptions } from "@remix-run/cloudflare";
 import { getSessionStorage } from "./session";
 
 let pagesContext: Record<string, any>;
 
-type Context = typeof pagesContext;
+export type PagesContext = typeof pagesContext;
 
-export let setPagesContext = (context: Context) => {
+export let setPagesContext = (context: PagesContext) => {
   pagesContext = context;
 
   return context;
@@ -12,15 +13,18 @@ export let setPagesContext = (context: Context) => {
 
 export let getPagesContext = () => pagesContext;
 
-export let getLoadContext = ({ data, env }: Context) => {
+export let getLoadContext = ({ data, env }: PagesContext) => {
   return setPagesContext({
     ...data,
     ...env,
   });
 };
 
-export let getLoadContextWithSession = ({ data, env }: Context) => {
-  let session = getSessionStorage(env);
+export let getLoadContextWithSession = (
+  { data, env }: PagesContext,
+  options: CookieOptions
+) => {
+  let session = getSessionStorage(env, options);
 
   return setPagesContext({
     ...data,
@@ -28,3 +32,5 @@ export let getLoadContextWithSession = ({ data, env }: Context) => {
     ...session,
   });
 };
+
+export { getSessionStorage };

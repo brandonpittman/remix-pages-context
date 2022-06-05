@@ -1,6 +1,7 @@
 import {
   createCookie,
   createCloudflareKVSessionStorage,
+  CookieOptions,
 } from "@remix-run/cloudflare";
 
 import { getPagesContext } from "./index";
@@ -10,7 +11,10 @@ const YEAR = SECONDS_IN_DAY * 365;
 let expires = new Date(Date.now() + YEAR * 1000);
 let maxAge = YEAR;
 
-export function getSessionStorage(env = getPagesContext()) {
+export const getSessionStorage = (
+  env = getPagesContext(),
+  options?: CookieOptions
+) => {
   if (!env.SESSION_SECRET) throw new Error("SESSION_SECRET is not defined");
 
   if (!env.KV) throw new Error("KV namespace, KV, is not defined");
@@ -22,10 +26,11 @@ export function getSessionStorage(env = getPagesContext()) {
     httpOnly: true,
     sameSite: "lax",
     secure: true,
+    ...options,
   });
 
   return createCloudflareKVSessionStorage({
     kv: env.KV,
     cookie,
   });
-}
+};
