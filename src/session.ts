@@ -1,5 +1,8 @@
 import type { Session } from "@remix-run/cloudflare";
-import { createCookieSessionStorage } from "@remix-run/cloudflare";
+import {
+  createCookie,
+  createCloudflareKVSessionStorage,
+} from "@remix-run/cloudflare";
 
 import { getPagesContext } from "./index";
 
@@ -8,22 +11,25 @@ const MONTH = SECONDS_IN_DAY * 31;
 let expires = new Date(Date.now() + MONTH * 1000);
 let maxAge = MONTH;
 
-// @see: https://github.com/jacob-ebey/remix-cloudflare-worker-template/blob/main/packages/remix-app/app/session.server.ts
 function getSessionStorage() {
   let env = getPagesContext();
 
   if (!env.SESSION_SECRET) throw new Error("SESSION_SECRET is not defined");
 
-  return createCookieSessionStorage({
-    cookie: {
-      name: "__session",
-      expires,
-      maxAge,
-      secrets: [env.SESSION_SECRET],
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-    },
+  if (!env.KV) throw new Error("KV namespace, KV, is not defined");
+
+  const cookie = createCookie("__session", {
+    expires,
+    maxAge,
+    secrets: [env.SESSION_SECRET],
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+  });
+
+  return createCloudflareKVSessionStorage({
+    kv: env.KV,
+    cookie,
   });
 }
 
