@@ -1,4 +1,3 @@
-import type { Session } from "@remix-run/cloudflare";
 import {
   createCookie,
   createCloudflareKVSessionStorage,

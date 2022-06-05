@@ -15,6 +15,11 @@ export let getPagesContext = () => pagesContext;
 export let getLoadContext = ({ data, env }: Context) => {
   const session = getSessionStorage();
 
+  setPagesContext({
+    ...data,
+    ...env,
+  });
+
   return setPagesContext({
     ...data,
     ...env,
