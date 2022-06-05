@@ -63,3 +63,7 @@ const foo = () => {
   // do something with context
 };
 ```
+
+## KV Session
+
+You can also import a function called `getLoadContextWithSession` to enabled Cloudflar KV session storage. If you want to use this, create a KV namespace named `KV` and an environment variable named `SESSION_SECRET`. The function takes a second param of `CookieOptions` if you want to customize the underlying cookie that's used for the session storage.
