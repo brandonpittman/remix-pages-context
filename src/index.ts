@@ -1,3 +1,5 @@
+import { getSessionStorage } from "./session";
+
 let pagesContext: Record<string, any>;
 
 type Context = typeof pagesContext;
@@ -11,10 +13,11 @@ export let setPagesContext = (context: Context) => {
 export let getPagesContext = () => pagesContext;
 
 export let getLoadContext = ({ data, env }: Context) => {
+  const session = getSessionStorage();
+
   return setPagesContext({
     ...data,
     ...env,
+    ...session,
   });
 };
-
-export { getSession, commitSession, destroySession } from "./session";

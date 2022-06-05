@@ -11,7 +11,7 @@ const YEAR = SECONDS_IN_DAY * 365;
 let expires = new Date(Date.now() + YEAR * 1000);
 let maxAge = YEAR;
 
-function getSessionStorage() {
+export function getSessionStorage() {
   let env = getPagesContext();
 
   if (!env.SESSION_SECRET) throw new Error("SESSION_SECRET is not defined");
@@ -31,27 +31,4 @@ function getSessionStorage() {
     kv: env.KV,
     cookie,
   });
-}
-
-export function commitSession(session: Session) {
-  let sessionStorage = getSessionStorage();
-
-  return sessionStorage.commitSession(session);
-}
-
-export function destroySession(session: Session) {
-  let sessionStorage = getSessionStorage();
-
-  return sessionStorage.destroySession(session);
-}
-
-export function getSession(requestOrCookie: Request | string | null) {
-  let cookie =
-    typeof requestOrCookie === "string"
-      ? requestOrCookie
-      : requestOrCookie?.headers.get("Cookie");
-
-  let sessionStorage = getSessionStorage();
-
-  return sessionStorage.getSession(cookie);
 }
