@@ -13,12 +13,14 @@ export let setPagesContext = (context: Context) => {
 export let getPagesContext = () => pagesContext;
 
 export let getLoadContext = ({ data, env }: Context) => {
-  const session = getSessionStorage();
-
-  setPagesContext({
+  return setPagesContext({
     ...data,
     ...env,
   });
+};
+
+export let getLoadContextWithSession = ({ data, env }: Context) => {
+  let session = getSessionStorage(env);
 
   return setPagesContext({
     ...data,
