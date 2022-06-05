@@ -7,9 +7,9 @@ import {
 import { getPagesContext } from "./index";
 
 const SECONDS_IN_DAY = 86400;
-const MONTH = SECONDS_IN_DAY * 31;
-let expires = new Date(Date.now() + MONTH * 1000);
-let maxAge = MONTH;
+const YEAR = SECONDS_IN_DAY * 365;
+let expires = new Date(Date.now() + YEAR * 1000);
+let maxAge = YEAR;
 
 function getSessionStorage() {
   let env = getPagesContext();
