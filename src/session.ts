@@ -16,8 +16,8 @@ export let getSessionStorage = (
   env = getPagesContext(),
   options?: CookieOptions
 ) => {
-  invariant(!env.SESSION_SECRET, "SESSION_SECRET is not defined");
-  invariant(!env.KV, "KV namespace, KV, is not defined");
+  invariant(env.SESSION_SECRET, "SESSION_SECRET is not defined");
+  invariant(env.KV, "KV namespace, KV, is not defined");
 
   let cookie = createCookie("__session", {
     expires,
