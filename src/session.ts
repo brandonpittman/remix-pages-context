@@ -9,7 +9,6 @@ import { getPagesContext } from "./index";
 
 let SECONDS_IN_DAY = 86400;
 let YEAR = SECONDS_IN_DAY * 365;
-let expires = new Date(Date.now() + YEAR * 1000);
 let maxAge = YEAR;
 
 export let getSessionStorage = (
@@ -20,7 +19,6 @@ export let getSessionStorage = (
   invariant(env.KV, "KV namespace, KV, is not defined");
 
   let cookie = createCookie("__session", {
-    expires,
     maxAge,
     secrets: [env.SESSION_SECRET],
     httpOnly: true,
