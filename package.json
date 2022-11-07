@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
-    "@remix-run/cloudflare": "^1.7.5",
+    "@remix-run/cloudflare": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsup": "^6.4.0",
@@ -41,7 +41,7 @@
   "homepage": "https://github.com/brandonpittman/remix-pages-context#readme",
   "peerDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
-    "@remix-run/cloudflare": "^1.7.5",
+    "@remix-run/cloudflare": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
