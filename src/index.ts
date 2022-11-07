@@ -1,11 +1,7 @@
-import { CookieOptions, SessionStorage } from "@remix-run/cloudflare";
+import { CookieOptions } from "@remix-run/cloudflare";
 import { getSessionStorage } from "./session";
 
-let pagesContext: {
-  data?: Record<string, unknown>;
-  env?: Record<string, unknown>;
-  session?: SessionStorage;
-};
+let pagesContext: Record<string, any>;
 
 export type PagesContext = typeof pagesContext;
 
