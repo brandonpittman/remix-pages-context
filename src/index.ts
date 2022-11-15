@@ -33,10 +33,7 @@ export function createTypedPagesContextWithSession<
     getPagesContext() {
       return _context as z.infer<Schema> & { session: SessionStorage };
     },
-    getLoadContextWithSession(
-      context: z.infer<Schema>,
-      options?: CookieOptions
-    ) {
+    getLoadContext(context: z.infer<Schema>, options?: CookieOptions) {
       let session = getSessionStorage(context.env, options);
       _context = schema.parse(context);
       return {
