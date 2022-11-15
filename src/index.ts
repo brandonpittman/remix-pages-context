@@ -8,13 +8,7 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
   schema: Schema
 ) {
   return {
-    setPagesContext(
-      context: z.infer<
-        Schema extends { session: any }
-          ? Schema & { session: SessionStorage }
-          : Schema
-      >
-    ) {
+    setPagesContext(context: z.infer<Schema>) {
       _context = schema.parse(context);
       return _context as z.infer<Schema>;
     },
@@ -24,6 +18,20 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
     getLoadContext(context: z.infer<Schema>) {
       _context = schema.parse(context);
       return _context as z.infer<Schema>;
+    },
+  };
+}
+
+export function createTypedPagesContextWithSession<
+  Schema extends z.AnyZodObject
+>(schema: Schema) {
+  return {
+    setPagesContext(context: z.infer<Schema>) {
+      _context = schema.parse(context);
+      return _context as z.infer<Schema> & { session: SessionStorage };
+    },
+    getPagesContext() {
+      return _context as z.infer<Schema> & { session: SessionStorage };
     },
     getLoadContextWithSession(
       context: z.infer<Schema>,
