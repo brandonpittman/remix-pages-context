@@ -8,7 +8,13 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
   schema: Schema
 ) {
   return {
-    setPagesContext(context: z.infer<Schema>) {
+    setPagesContext(
+      context: z.infer<
+        Schema extends { session: any }
+          ? Schema & { session: SessionStorage }
+          : Schema
+      >
+    ) {
       _context = schema.parse(context);
       return _context as z.infer<Schema>;
     },
