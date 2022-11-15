@@ -9,35 +9,41 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
 ) {
   return {
     setPagesContext(context: z.infer<Schema>) {
-      _context = schema.parse(context);
-      return _context as z.infer<Schema>;
+      let { data, env } = schema.parse(context);
+      return { ...data, ...env } as z.infer<Schema>;
     },
     getPagesContext() {
       return _context as z.infer<Schema>;
     },
     getLoadContext(context: z.infer<Schema>) {
-      _context = schema.parse(context);
-      return _context as z.infer<Schema>;
+      let { data, env } = schema.parse(context);
+      return { ...data, ...env } as z.infer<Schema>;
     },
   };
 }
 
 export function createTypedPagesContextWithSession<
   Schema extends z.AnyZodObject
->(schema: Schema) {
+>(schema: Schema, options?: CookieOptions) {
   return {
     setPagesContext(context: z.infer<Schema>) {
-      _context = schema.parse(context);
-      return _context as z.infer<Schema> & { session: SessionStorage };
+      let session = getSessionStorage(context.env);
+      let { data, env } = schema.parse(context);
+      return {
+        ...(env as z.infer<Schema>["env"]),
+        ...(data as z.infer<Schema>["data"]),
+        ...(session ? { session } : {}),
+      } as z.infer<Schema> & { session: SessionStorage };
     },
     getPagesContext() {
       return _context as z.infer<Schema> & { session: SessionStorage };
     },
-    getLoadContext(context: z.infer<Schema>, options?: CookieOptions) {
+    getLoadContext(context: z.infer<Schema>) {
       let session = getSessionStorage(context.env, options);
-      _context = schema.parse(context);
+      let { data, env } = schema.parse(context);
       return {
-        ...(_context as z.infer<Schema>),
+        ...(env as z.infer<Schema>["env"]),
+        ...(data as z.infer<Schema>["data"]),
         ...(session ? { session } : {}),
       } as z.infer<Schema> & { session: SessionStorage };
     },
