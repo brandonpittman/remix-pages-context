@@ -1,4 +1,4 @@
-import { CookieOptions } from "@remix-run/cloudflare";
+import { CookieOptions, SessionStorage } from "@remix-run/cloudflare";
 import { getSessionStorage } from "./session";
 import { z } from "zod";
 
@@ -26,10 +26,9 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
       let session = getSessionStorage(context.env, options);
       _context = schema.parse(context);
       return {
-        // @ts-expect-error
-        ..._context,
+        ...(_context as z.infer<Schema>),
         ...(session ? { session } : {}),
-      } as z.infer<Schema> & { session: typeof session };
+      } as z.infer<Schema> & { session: SessionStorage };
     },
   };
 }
