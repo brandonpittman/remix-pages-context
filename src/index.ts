@@ -16,17 +16,20 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
       return _context as z.infer<Schema>;
     },
     getLoadContext(context: z.infer<Schema>) {
-      return this.setPagesContext(context);
+      _context = schema.parse(context);
+      return _context as z.infer<Schema>;
     },
     getLoadContextWithSession(
       context: z.infer<Schema>,
       options?: CookieOptions
     ) {
       let session = getSessionStorage(context.env, options);
-      return this.setPagesContext({
-        ...context,
+      _context = schema.parse(context);
+      return {
+        // @ts-expect-error
+        ..._context,
         ...(session ? { session } : {}),
-      }) as z.infer<Schema> & { session: typeof session };
+      } as z.infer<Schema> & { session: typeof session };
     },
   };
 }
