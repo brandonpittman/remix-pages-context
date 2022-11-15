@@ -1,36 +1,34 @@
 import { CookieOptions } from "@remix-run/cloudflare";
 import { getSessionStorage } from "./session";
+import { z } from "zod";
 
-let pagesContext: Record<string, any>;
+let _context: unknown;
 
-export type PagesContext = typeof pagesContext;
-
-export let setPagesContext = (context: PagesContext) => {
-  pagesContext = context;
-
-  return context;
-};
-
-export let getPagesContext = () => pagesContext;
-
-export let getLoadContext = ({ data, env }: PagesContext) => {
-  return setPagesContext({
-    ...data,
-    ...env,
-  });
-};
-
-export let getLoadContextWithSession = (
-  { data, env }: PagesContext,
-  options: CookieOptions
-) => {
-  let session = getSessionStorage(env, options);
-
-  return setPagesContext({
-    ...data,
-    ...env,
-    ...(session ? { session } : {}),
-  });
-};
+export function createTypedPagesContext<Schema extends z.AnyZodObject>(
+  schema: Schema
+) {
+  return {
+    setPagesContext(context: z.infer<Schema>) {
+      _context = schema.parse(context);
+      return _context as z.infer<Schema>;
+    },
+    getPagesContext() {
+      return _context as z.infer<Schema>;
+    },
+    getLoadContext(context: z.infer<Schema>) {
+      return this.setPagesContext(context);
+    },
+    getLoadContextWithSession(
+      context: z.infer<Schema>,
+      options?: CookieOptions
+    ) {
+      let session = getSessionStorage(context.env, options);
+      return this.setPagesContext({
+        ...context,
+        ...(session ? { session } : {}),
+      }) as z.infer<Schema> & { session: typeof session };
+    },
+  };
+}
 
 export { getSessionStorage };
