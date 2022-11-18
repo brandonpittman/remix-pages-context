@@ -17,7 +17,9 @@ export function createTypedPagesContext<
 ) {
   return {
     getPagesContext() {
-      return _context as z.infer<ContextSchema> & {
+      return _context as {
+        env: z.infer<ContextSchema>;
+      } & {
         sessionStorage: TypedSessionStorage<SessionSchema>;
         //getSession: TypedSessionStorage<SessionSchema>["getSession"];
         //commitSession: TypedSessionStorage<SessionSchema>["commitSession"];
@@ -36,7 +38,7 @@ export function createTypedPagesContext<
         env,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
-      return _context as z.infer<ContextSchema> & {
+      return _context as { env: z.infer<ContextSchema> } & {
         sessionStorage: TypedSessionStorage<SessionSchema>;
         //getSession: TypedSessionStorage<SessionSchema>["getSession"];
         //commitSession: TypedSessionStorage<SessionSchema>["commitSession"];
