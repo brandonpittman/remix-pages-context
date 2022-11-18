@@ -19,20 +19,20 @@ context.
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 import * as build from "@remix-run/dev/server-build";
-import {
-  // Choose one of the two...
-  createTypedPagesContext,
-  createTypedPagesContextWithSession,
-} from "remix-pages-context";
+import { createTypedPagesContext } from "remix-pages-context";
 import { z } from "zod";
 
-export let schema = z.object({
+export let contextSchema = z.object({
   SESSION_SECRET: z.string(), // only necessary if you're using the WithSession variant
   // other ENV vars...
 });
 
-export let { getLoadContext, getPagesContext, setPagesContext } =
-  createTypedPagesContextWithSession(schema);
+export let sessionSchema = //...
+
+export let { getLoadContext, getPagesContext } = createTypedPagesContext({
+  contextSchema: ContextSchema,
+  sessionSchema: SessionSchema,
+});
 
 const handleRequest = createPagesFunctionHandler({
   build,
@@ -50,7 +50,10 @@ export function onRequest(context: EventContext<any, any, any>) {
 If you pass a Zod schema like this:
 
 ```
-createTypedPagesContextWithSession(schema, {schema: SessionSchema})
+createTypedPagesContext({
+  contextSchema: ContextSchema,
+  sessionSchema: SessionSchema,
+})
 ```
 
 You'll get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions). If you don't pass this optional schema, you'll get a normal Remix sessionStorage object.
@@ -61,14 +64,7 @@ In loaders, you can access `context` along with `request` and `params`, but it w
 
 ```ts
 export let loader = async() {
-  let {
-    sessionStorage: {
-      getSession,
-      commitSession,
-      destroySession
-    },
-    // all your other ENV vars...
-  } = getPagesContext();
+  let { env, sessionStorage } = getPagesContext();
 }
 ```
 
@@ -81,12 +77,10 @@ until the `loader` in `root.tsx` is run.
 
 ```ts
 // foo.server.ts
-import { getPagesContext } from "remix-pages-context";
+import { getPagesContext } from "server";
 
-let context;
-
-const foo = () => {
-  context = getPagesContext();
+export let foo = async () => {
+  let { env, sessionStorage } = getPagesContext();
   // do something with context
 };
 ```
@@ -94,6 +88,6 @@ const foo = () => {
 ## KV Session
 
 To enable Cloudflare KV session storage, create a KV namespace named `KV` and
-an environment variable named `SESSION_SECRET`. The `WithSession` version of
-the factory function takes a second param of `CookieOptions` if you want to
-customize the underlying cookie that's used for the session storage.
+an environment variable named `SESSION_SECRET`. The factory function takes a
+second param of `CookieOptions` if you want to customize the underlying cookie
+that's used for the session storage.
