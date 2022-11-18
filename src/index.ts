@@ -31,19 +31,19 @@ export function createTypedPagesContextWithSession<
     setPagesContext(context: z.infer<Schema>) {
       let next = schema.parse(context);
       _context = next;
-      return _context as z.infer<Schema> & { session: SessionStorage };
+      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
     },
     getPagesContext() {
-      return _context as z.infer<Schema> & { session: SessionStorage };
+      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
     },
     getLoadContext(context: z.infer<Schema>) {
-      let session = getSessionStorage(context.env, options);
+      let sessionStorage = getSessionStorage(context.env, options);
       let data = schema.parse({ ...context.data, ...context.env });
       _context = {
         ...data,
-        ...(session ? { session } : {}),
+        ...(sessionStorage ? { sessionStorage } : {}),
       };
-      return _context as z.infer<Schema> & { session: SessionStorage };
+      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
     },
   };
 }
