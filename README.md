@@ -10,16 +10,29 @@ Some setup is requried.
 npm install remix-pages-context
 ```
 
-## Set up `server.js`
+## Set up `server.ts`
 
-Import `getLoadContext` into your `server.js`. This takes the `data` and `env`
+Import `getLoadContext` into your `server.ts`. This takes the `data` and `env`
 keys off the Cloudflare Pages function param and passes it to your Remix loader
 context.
 
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 import * as build from "@remix-run/dev/server-build";
-import { getLoadContext } from "remix-pages-context";
+import {
+  // Choose one of the two...
+  createTypedPagesContext,
+  createTypedPagesContextWithSession,
+} from "remix-pages-context";
+import { z } from "zod";
+
+export let schema = z.object({
+  SESSION_SECRET: z.string(), // only necessary if you're using the WithSession variant
+  // other ENV vars...
+});
+
+export let { getLoadContext, getPagesContext, setPagesContext } =
+  createTypedPagesContextWithSession(schema);
 
 const handleRequest = createPagesFunctionHandler({
   build,
@@ -27,25 +40,29 @@ const handleRequest = createPagesFunctionHandler({
   getLoadContext,
 });
 
-export function onRequest(context) {
+export function onRequest(context: EventContext<any, any, any>) {
   return handleRequest(context);
 }
 ```
 
-The provided `getLoadContext` looks like this:
-
-```ts
-getLoadContext: ({ data, env }) => {
-  return setPagesContext({
-    ...data,
-    ...env,
-  });
-};
-```
-
 ## Use the context
 
-Then, in any other module, call `getPagesContext()` to access the context set in `server.js`.
+In loaders, you can access `context` along with `request` and `params`, but it won't be typed. Better to use it like this:
+
+```ts
+export let loader = async() {
+  let {
+    sessionStorage: {
+      getSession,
+      commitSession,
+      destroySession
+    },
+    // all your other ENV vars...
+  } = getPagesContext();
+}
+```
+
+Then, in any other module, call `getPagesContext()` to access the context set in `server.ts`.
 
 ## Limitations
 
@@ -66,4 +83,7 @@ const foo = () => {
 
 ## KV Session
 
-You can also import a function called `getLoadContextWithSession` to enabled Cloudflare KV session storage. If you want to use this, create a KV namespace named `KV` and an environment variable named `SESSION_SECRET`. The function takes a second param of `CookieOptions` if you want to customize the underlying cookie that's used for the session storage.
+To enable Cloudflare KV session storage, create a KV namespace named `KV` and
+an environment variable named `SESSION_SECRET`. The `WithSession` version of
+the factory function takes a second param of `CookieOptions` if you want to
+customize the underlying cookie that's used for the session storage.
