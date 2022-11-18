@@ -30,9 +30,10 @@ export function createTypedPagesContext<
         sessionSchema,
         options
       );
-      let data = contextSchema.parse(context);
+      let env = contextSchema.parse(context.env);
       _context = {
-        ...data,
+        ...context,
+        env,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
       return _context as z.infer<ContextSchema> & {
