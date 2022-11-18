@@ -34,7 +34,7 @@ export function createTypedPagesContext<
         env,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
-      return _context as Omit<EventContext<any, any, any>, "env"> & {
+      return context as Omit<EventContext<any, any, any>, "env"> & {
         env: z.infer<ContextSchema>;
         sessionStorage: TypedSessionStorage<SessionSchema>;
       };
