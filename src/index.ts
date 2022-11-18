@@ -17,13 +17,10 @@ export function createTypedPagesContext<
 ) {
   return {
     getPagesContext() {
-      return _context as {
+      return _context as Omit<EventContext<any, any, any>, "env"> & {
         env: z.infer<ContextSchema>;
       } & {
         sessionStorage: TypedSessionStorage<SessionSchema>;
-        //getSession: TypedSessionStorage<SessionSchema>["getSession"];
-        //commitSession: TypedSessionStorage<SessionSchema>["commitSession"];
-        //destroySession: TypedSessionStorage<SessionSchema>["destroySession"];
       };
     },
     getLoadContext(context: EventContext<any, any, any>) {
@@ -38,12 +35,19 @@ export function createTypedPagesContext<
         env,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
-      return _context as { env: z.infer<ContextSchema> } & {
+      return _context as Omit<EventContext<any, any, any>, "env"> & {
+        env: z.infer<ContextSchema>;
         sessionStorage: TypedSessionStorage<SessionSchema>;
-        //getSession: TypedSessionStorage<SessionSchema>["getSession"];
-        //commitSession: TypedSessionStorage<SessionSchema>["commitSession"];
-        //destroySession: TypedSessionStorage<SessionSchema>["destroySession"];
       };
     },
   };
 }
+
+let context = createTypedPagesContext({
+  contextSchema: z.object({
+    foo: z.string(),
+  }),
+  sessionSchema: z.object({
+    foo: z.string(),
+  }),
+});
