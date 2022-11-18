@@ -13,7 +13,8 @@ let maxAge = YEAR;
 
 export let getSessionStorage = (
   env: any,
-  options?: CookieOptions & { schema?: z.AnyZodObject }
+  schema: z.AnyZodObject,
+  options?: CookieOptions
 ) => {
   invariant(env.SESSION_SECRET, "SESSION_SECRET is not defined");
   invariant(env.KV, "KV namespace, KV, is not defined");
@@ -32,12 +33,8 @@ export let getSessionStorage = (
     cookie,
   });
 
-  if (options?.schema) {
-    return createTypedSessionStorage({
-      sessionStorage,
-      schema: options.schema,
-    });
-  } else {
-    return sessionStorage;
-  }
+  return createTypedSessionStorage({
+    sessionStorage,
+    schema,
+  });
 };
