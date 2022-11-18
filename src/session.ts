@@ -18,7 +18,7 @@ export let getSessionStorage = (env: any, options?: CookieOptions) => {
     secrets: [env.SESSION_SECRET],
     httpOnly: true,
     sameSite: "lax",
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     ...options,
   });
 
