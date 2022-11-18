@@ -45,6 +45,16 @@ export function onRequest(context: EventContext<any, any, any>) {
 }
 ```
 
+## Typed Sessions
+
+If you pass a Zod schema like this:
+
+```
+createTypedPagesContextWithSession(schema, {schema: SessionSchema})
+```
+
+You'll get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions). If you don't pass this optional schema, you'll get a normal Remix sessionStorage object.
+
 ## Use the context
 
 In loaders, you can access `context` along with `request` and `params`, but it won't be typed. Better to use it like this:
