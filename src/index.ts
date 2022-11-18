@@ -17,7 +17,7 @@ export function createTypedPagesContext<
 ) {
   return {
     getPagesContext() {
-      return _context as Omit<EventContext<any, any, any>, "env"> & {
+      return _context as {
         env: z.infer<ContextSchema>;
       } & {
         sessionStorage: TypedSessionStorage<SessionSchema>;
@@ -31,7 +31,6 @@ export function createTypedPagesContext<
       );
       let env = contextSchema.parse(context.env);
       _context = {
-        ...context,
         env,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
@@ -42,12 +41,3 @@ export function createTypedPagesContext<
     },
   };
 }
-
-let context = createTypedPagesContext({
-  contextSchema: z.object({
-    foo: z.string(),
-  }),
-  sessionSchema: z.object({
-    foo: z.string(),
-  }),
-});
