@@ -16,7 +16,7 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
     getPagesContext() {
       return _context as z.infer<Schema>;
     },
-    getLoadContext(context: z.infer<Schema>) {
+    getLoadContext(context: EventContext<any, any, any>) {
       let data = schema.parse({ ...context.data, ...context.env });
       _context = { ...data } as z.infer<Schema>;
       return _context;
@@ -36,7 +36,7 @@ export function createTypedPagesContextWithSession<
     getPagesContext() {
       return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
     },
-    getLoadContext(context: z.infer<Schema>) {
+    getLoadContext(context: EventContext<any, any, any>) {
       let sessionStorage = getSessionStorage(context.env, options);
       let data = schema.parse({ ...context.data, ...context.env });
       _context = {
