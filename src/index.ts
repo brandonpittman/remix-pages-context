@@ -1,6 +1,7 @@
 import { CookieOptions, SessionStorage } from "@remix-run/cloudflare";
 import { getSessionStorage } from "./session";
 import { z } from "zod";
+import { TypedSessionStorage } from "remix-utils";
 
 let _context: unknown;
 
@@ -25,16 +26,21 @@ export function createTypedPagesContext<Schema extends z.AnyZodObject>(
 }
 
 export function createTypedPagesContextWithSession<
-  Schema extends z.AnyZodObject
->(schema: Schema, options?: CookieOptions) {
+  ContextSchema extends z.AnyZodObject,
+  SessionSchema extends z.AnyZodObject
+>(schema: ContextSchema, options?: CookieOptions & { schema?: SessionSchema }) {
   return {
-    setPagesContext(context: z.infer<Schema>) {
+    setPagesContext(context: z.infer<ContextSchema>) {
       let next = schema.parse(context);
       _context = next;
-      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
+      return _context as z.infer<ContextSchema> & {
+        sessionStorage: TypedSessionStorage<SessionSchema>;
+      };
     },
     getPagesContext() {
-      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
+      return _context as z.infer<ContextSchema> & {
+        sessionStorage: TypedSessionStorage<SessionSchema>;
+      };
     },
     getLoadContext(context: EventContext<any, any, any>) {
       let sessionStorage = getSessionStorage(context.env, options);
@@ -43,7 +49,9 @@ export function createTypedPagesContextWithSession<
         ...data,
         ...(sessionStorage ? { sessionStorage } : {}),
       };
-      return _context as z.infer<Schema> & { sessionStorage: SessionStorage };
+      return _context as z.infer<ContextSchema> & {
+        sessionStorage: TypedSessionStorage<SessionSchema>;
+      };
     },
   };
 }
