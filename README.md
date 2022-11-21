@@ -12,9 +12,11 @@ npm install remix-pages-context
 
 ## Set up `server.ts`
 
-Import `getLoadContext` into your `server.ts`. This takes the `data` and `env`
-keys off the Cloudflare Pages function param and passes it to your Remix loader
-context.
+1. Import `getLoadContext` into your `server.ts`. 
+2. Create a typed context object, passing in Zod schemas for your ENV variables and session values 
+3. Destructure `getLoadContext` and `getPagesContext` off the object
+4. Pass `getLoadContext` into `createPagesFunctionHandler`
+5. Use `getPagesContext` anywhere you want to access your typed ENV variables and session values
 
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
@@ -27,12 +29,11 @@ export let contextSchema = z.object({
   // other ENV vars...
 });
 
-export let sessionSchema = //...
+export let sessionSchema = z.object({
+  someValue: z.string().optional()
+})
 
-export let { getLoadContext, getPagesContext } = createTypedPagesContext({
-  contextSchema: ContextSchema,
-  sessionSchema: SessionSchema,
-});
+export let { getLoadContext, getPagesContext } = createTypedPagesContext({contextSchema, sessionSchema});
 
 const handleRequest = createPagesFunctionHandler({
   build,
@@ -47,16 +48,13 @@ export function onRequest(context: EventContext<any, any, any>) {
 
 ## Typed Sessions
 
-If you pass a Zod schema like this:
+By providiing a Zod schema for `sessionSchema` like this:
 
 ```
-createTypedPagesContext({
-  contextSchema: ContextSchema,
-  sessionSchema: SessionSchema,
-})
+createTypedPagesContext({ contextSchema, sessionSchema })
 ```
 
-You'll get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions). If you don't pass this optional schema, you'll get a normal Remix sessionStorage object.
+You get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions).
 
 ## Use the context
 
