@@ -1,6 +1,6 @@
 # remix-pages-context
 
-This package lets you use Cloudflare Pages' environment variables more easily.
+This package lets you use Cloudflare Pages' environment variables and KV-backed sessions more easily.
 
 Some setup is requried.
 
