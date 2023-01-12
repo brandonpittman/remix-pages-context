@@ -25,7 +25,7 @@ import { createTypedPagesContext } from "remix-pages-context";
 import { z } from "zod";
 
 export let contextSchema = z.object({
-  SESSION_SECRET: z.string(), // only necessary if you're using the WithSession variant
+  SESSION_SECRET: z.string(),
   // other ENV vars...
 });
 
