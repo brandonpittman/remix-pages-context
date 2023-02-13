@@ -1,7 +1,6 @@
 # remix-pages-context
 
-This package lets you use Cloudflare Pages' environment variables and KV-backed sessions more easily.
-
+This package lets you use Cloudflare Pages' environment variables and KV-backed sessions more easily. 
 Some setup is requried.
 
 ## Install
@@ -48,7 +47,7 @@ export function onRequest(context: EventContext<any, any, any>) {
 
 ## Typed Sessions
 
-By providiing a Zod schema for `sessionSchema` like this:
+Provide a Zod schema for `sessionSchema` like this:
 
 ```
 createTypedPagesContext({ contextSchema, sessionSchema })
