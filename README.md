@@ -11,10 +11,10 @@ npm install remix-pages-context
 
 ## Set up `server.ts`
 
-2. Create a typed context object, passing in Zod schemas for your ENV variables and session values 
-3. Destructure `getLoadContext` and `getPagesContext` off the object
-4. Pass `getLoadContext` into `createPagesFunctionHandler`
-5. Use `getPagesContext` anywhere you want to access your typed ENV variables and session values
+1. Create a typed context object, passing in Zod schemas for your ENV variables and session values 
+2. Destructure `getLoadContext` and `getPagesContext` off the object
+3. Pass `getLoadContext` into `createPagesFunctionHandler`
+4. Use `getPagesContext` anywhere you want to access your typed ENV variables and session values
 
 ```ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
@@ -82,8 +82,7 @@ export let foo = async () => {
 ```
 
 ## KV Session
-
-To enable Cloudflare KV session storage, create a KV namespace named `KV` and
+Enable Cloudflare KV session storage when you create a KV namespace named `KV` and
 an environment variable named `SESSION_SECRET`. The factory function takes a
 second param of `CookieOptions` if you want to customize the underlying cookie
 that's used for the session storage.
