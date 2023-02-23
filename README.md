@@ -11,7 +11,6 @@ npm install remix-pages-context
 
 ## Set up `server.ts`
 
-1. Import `getLoadContext` into your `server.ts`. 
 2. Create a typed context object, passing in Zod schemas for your ENV variables and session values 
 3. Destructure `getLoadContext` and `getPagesContext` off the object
 4. Pass `getLoadContext` into `createPagesFunctionHandler`
