@@ -1,6 +1,6 @@
 # remix-pages-context
 
-This package lets you use Cloudflare Pages' environment variables and KV-backed sessions more easily. 
+This package lets you use Cloudflare Pages' environment variables and KV-backed sessions more easily.
 Some setup is requried.
 
 ## Install
@@ -11,7 +11,7 @@ npm install remix-pages-context
 
 ## Set up `server.ts`
 
-1. Create a typed context object, passing in Zod schemas for your ENV variables and session values 
+1. Create a typed context object, passing in Zod schemas for your ENV variables and session values
 2. Destructure `getLoadContext` and `getPagesContext` off the object
 3. Pass `getLoadContext` into `createPagesFunctionHandler`
 4. Use `getPagesContext` anywhere you want to access your typed ENV variables and session values
@@ -28,10 +28,13 @@ export let contextSchema = z.object({
 });
 
 export let sessionSchema = z.object({
-  someValue: z.string().optional()
-})
+  someValue: z.string().optional(),
+});
 
-export let { getLoadContext, getPagesContext } = createTypedPagesContext({contextSchema, sessionSchema});
+export let { getLoadContext, getPagesContext } = createTypedPagesContext({
+  contextSchema,
+  sessionSchema,
+});
 
 const handleRequest = createPagesFunctionHandler({
   build,
@@ -44,15 +47,22 @@ export function onRequest(context: EventContext<any, any, any>) {
 }
 ```
 
-## Typed Sessions
+## Optional Typed Sessions
 
-Provide a Zod schema for `sessionSchema` like this:
+If you provide a Zod schema for `sessionSchema` like this:
 
 ```
 createTypedPagesContext({ contextSchema, sessionSchema })
 ```
 
-You get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions).
+…you will get a [typed session from Remix Utils](https://github.com/sergiodxa/remix-utils#typed-sessions).
+
+### KV Session
+
+Enable Cloudflare KV session storage when you create a KV namespace named `KV` and
+an environment variable named `SESSION_SECRET`. The factory function takes a
+second param of `CookieOptions` if you want to customize the underlying cookie
+that's used for the session storage.
 
 ## Use the context
 
@@ -80,9 +90,3 @@ export let foo = async () => {
   // do something with context
 };
 ```
-
-## KV Session
-Enable Cloudflare KV session storage when you create a KV namespace named `KV` and
-an environment variable named `SESSION_SECRET`. The factory function takes a
-second param of `CookieOptions` if you want to customize the underlying cookie
-that's used for the session storage.
