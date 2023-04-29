@@ -1,6 +1,6 @@
 import {
   createCookie,
-  createCloudflareKVSessionStorage,
+  createWorkersKVSessionStorage,
   CookieOptions,
 } from "@remix-run/cloudflare";
 import { createTypedSessionStorage } from "remix-utils";
@@ -28,7 +28,7 @@ export let getSessionStorage = (
     ...options,
   });
 
-  let sessionStorage = createCloudflareKVSessionStorage({
+  let sessionStorage = createWorkersKVSessionStorage({
     kv: env.KV,
     cookie,
   });
